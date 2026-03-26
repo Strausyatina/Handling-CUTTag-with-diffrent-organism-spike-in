@@ -15,7 +15,8 @@ example.spikein_norm.sh
 ```
 
 v260325.1 -- now host and spike-in chromosomes are specified in text files with chromosomes lists (not `_spikein` as before); 
-there is also a mandatory suffix for the bamCoverage_scaleFactor output directory now (like `_lambda`)
+there is also a mandatory suffix for the bamCoverage_scaleFactor output directory now (like `_lambda`); it will also create a per-chromosome count table for all samples.
+
 
 `bash spikein_norm.chrnames_files.sh ${dir_snakepipes_dnamapping_out} ${path_host_chrs} ${path_spikein_chrs} ${out_suffix} -j 16`
 

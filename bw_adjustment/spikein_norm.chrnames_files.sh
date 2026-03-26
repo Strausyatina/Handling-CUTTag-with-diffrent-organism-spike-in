@@ -1,4 +1,4 @@
-module load deeptools slurm snakemake bedtools
+module load deeptools slurm snakemake bedtools samtools
 
 workdir="$1"
 path_host_chrs="$2"
