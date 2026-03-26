@@ -1,3 +1,7 @@
+## Rationale
+
+Capturing systemic shifts reflected in spike-in proportions.
+
 ## Versioning:
 
 v260325.0 -- almost unchanged, automatically considers `*_spikein` chromosomes as spike-in together, the rest is considered as host. 
