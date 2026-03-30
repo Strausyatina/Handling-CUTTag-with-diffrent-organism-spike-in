@@ -21,6 +21,9 @@ samplenames, = glob_wildcards(os.path.join("filtered_bam",'{sample}.filtered.bam
 rule all:
     input:
         os.path.join(subdirectory,"multiBamSummary.spike_in.scaleFactors.tsv"),
+        expand(os.path.join(subdirectory, "host_only_bam", "{sample}.host_only.bam"), sample=samplenames),
+        expand(os.path.join(subdirectory, "{sample}.host_raw.bw"), sample=samplenames),
+        expand(os.path.join(subdirectory, "{sample}.host_CPM.bw"), sample=samplenames),
         expand(os.path.join(subdirectory,"{sample}.scaled.bw"), sample = samplenames),
         os.path.join(subdirectory, "chromosome_counts.tsv")
 
@@ -52,7 +55,7 @@ rule chromosome_counts_table:
         awk 'FNR==1 && NR!=1 {{next}} {{print}}' {input} > {output}
         """
 
-# Computing scale factors from spike-in proportions (defined: *_spikein chrs):
+# Computing scale factors from spike-in proportions (chrs provided in file, not *_spikein chrs as before):
 
 rule spike_in_region:
     input:
@@ -125,4 +128,34 @@ rule bamCoverage_scaleFactor:
           --scaleFactor $(grep '{params.pattern}' {input.factortable} | cut -f 2) \
           &> {log}
         """
+
+# Raw and CPM (within host) scaling of bw:
+
+
+rule bamCoverage_host_raw:
+    input:
+        bam=os.path.join(subdirectory, "host_only_bam", "{sample}.host_only.bam"),
+        bai=os.path.join(subdirectory, "host_only_bam", "{sample}.host_only.bam.bai")
+    output:
+        bigwig=os.path.join(subdirectory, "{sample}.host_raw.bw"),
+        bigwigCPM=os.path.join(subdirectory, "{sample}.host_CPM.bw")
+    params:
+        param_string="--binSize 25 --minMappingQuality 3 --extendReads"
+    threads: 8
+    log:
+        os.path.join(subdirectory, "log", "bamCoverage.{sample}.host_raw_cpm.log")
+    shell:
+        r"""
+        bamCoverage -p {threads} {params.param_string} \
+          -b {input.bam} \
+          -o {output.bigwig} \
+          &> {log}
+        bamCoverage -p {threads} {params.param_string} \
+          -b {input.bam} \
+          -o {output.bigwigCPM} \
+          --normalizeUsing CPM \
+          &>> {log}
+
+        """
+
 
