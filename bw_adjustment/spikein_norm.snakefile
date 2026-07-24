@@ -1,4 +1,4 @@
-# original author of the code: Yinxiu Zhan  
+# original author of the code: Tarcísio Fontenele de Brito  
 # (minor) changes introduced by Asia Mendelevich 
 # Changes: 
 #   - multiBamSummary bins --> multiBamSummary BED-file (`bins --region` accepted only 1 region, we may have several)
