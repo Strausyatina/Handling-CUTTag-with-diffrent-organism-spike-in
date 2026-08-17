@@ -116,7 +116,7 @@ rule bamCoverage_scaleFactor:
         bigwig=os.path.join(subdirectory, "{sample}.scaled.bw")
     params:
         param_string="--binSize 25 --minMappingQuality 3 --extendReads",
-        pattern="{sample}.filtered.bam"
+        label="{sample}.filtered.bam"   # column 1 of the scale factor table
     threads: 8
     log:
         os.path.join(subdirectory, "log", "bamCoverage.{sample}.scaled.log")
@@ -125,7 +125,7 @@ rule bamCoverage_scaleFactor:
         bamCoverage -p {threads} {params.param_string} \
           -b {input.bam} \
           -o {output.bigwig} \
-          --scaleFactor $(grep '{params.pattern}' {input.factortable} | cut -f 2) \
+          --scaleFactor $(awk -F'\t' '$1=="{params.label}" {{print $2}}' {input.factortable}) \
           &> {log}
         """
 
