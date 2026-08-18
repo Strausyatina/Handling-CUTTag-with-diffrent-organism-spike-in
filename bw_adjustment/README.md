@@ -5,7 +5,7 @@ Capturing systemic shifts reflected in spike-in proportions.
 ## Versioning:
 
 
-**v260807.0** -- **new `bw_adjustment_extended`**, host and spike-in in one run
+**v260807.0** -- **new `bw_adjustment_extended`**, host, spike-in and spike-in corrected host in one run
 (the earlier versions cover the host only). 
 
 `bash bw_adjustment_extended.sh ${dir_snakepipes_dnamapping_out} ${path_host_chrs} ${path_spikein_chrs} ${host_name} ${spikein_name} ${blacklist_host} ${blacklist_spikein} ${out_suffix} -j 16`
